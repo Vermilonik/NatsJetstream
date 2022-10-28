@@ -7,6 +7,6 @@ terminal:
 nats-server -c server.conf
 nats stream add
 nats consumer add
-source venv/bin/activate
+pip install -r requirements.txt
 python mini_bot.py
 ```

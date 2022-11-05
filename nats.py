@@ -16,20 +16,20 @@ dp = Dispatcher()
 
 @dp.message(CommandMk2("write {num} {msg}"))
 async def writer(m: types.Message, num: Optional[str], msg: Optional[str]):
-    print(num)
-    print(msg)
+    # print(num)
+    # print(msg)
     nc = await nats.connect("localhost:4222")
     js = nc.jetstream()
 
     for i in range(0, int(num)):
         a = msgpack.packb(msg)
-        if m.document:
-            ab = msgpack.packb(m.document.file_id)
-            ack2 = await js.publish("mass_bullshit", ab)
-            print(ack2)
+        # if m.document:
+        #     ab = msgpack.packb(m.document.file_id)
+        #     ack2 = await js.publish("mass_bullshit", ab)
+        #     print(ack2)
         ack = await js.publish("mass_bullshit", a)
-        print(a)
-        print(ack)
+        # print(a)
+        # print(ack)
 
     await nc.close()
 
@@ -45,8 +45,8 @@ async def listener(m: types.Message, batch_size: int = 5, polling_timeout=10)
         try:
             msgs = await psub.fetch(batch_size)
             for msg in msgs:
-                print(msg)
-                print(msgpack.unpackb(msg.data))
+                # print(msg)
+                # print(msgpack.unpackb(msg.data))
                 try:
                     await bot.send_message(admin_id, msgpack.unpackb(msg.data))
                 except aiogram.exceptions.TelegramForbiddenError:

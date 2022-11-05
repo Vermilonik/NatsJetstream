@@ -27,9 +27,10 @@ async def writer(m: types.Message, num: Optional[str], msg: Optional[str]):
         #     ab = msgpack.packb(m.document.file_id)
         #     ack2 = await js.publish("mass_bullshit", ab)
         #     print(ack2)
-        ack = await js.publish("mass_bullshit", a)
+        # ack = await js.publish("mass_bullshit", a)
         # print(a)
         # print(ack)
+        await js.publish("mass_bullshit", a)
 
     await nc.close()
 

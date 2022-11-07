@@ -4,13 +4,13 @@ from typing import Optional
 import msgpack
 import nats
 from aiogram import Bot, Dispatcher, types
-from aiogram.exceptions import TelegramRetryAfter
+from aiogram.exceptions import TelegramRetryAfter, TelegramForbiddenError
 from aiogram.filters.command import Command
 from command_mk2 import CommandMk2
-from nats import errors
+from nats.errors import TimeoutError
 
-bot = Bot(token="")
-admin_id =
+bot = Bot(token="5788906850:AAEd-E1dhx_XXJH2ir2zprnuA2KbYg2W130")
+admin_id = 5042344467
 dp = Dispatcher()
 
 
@@ -21,12 +21,13 @@ async def writer(m: types.Message, num: Optional[str], msg: Optional[str]):
 
     for i in range(0, int(num)):
         await js.publish("mass_bullshit", msgpack.packb(msg))
+        print(msg)
 
     await nc.close()
 
 
 @dp.message(Command(commands=["listen"]))
-async def listener(m: types.Message, batch_size: int = 5, polling_timeout=10)
+async def listener(m: types.Message, batch_size: int = 5, polling_timeout=10):
     nc = await nats.connect("localhost:4222")
     js = nc.jetstream()
     psub = await js.pull_subscribe(subject=">", durable="aiogram")
@@ -38,10 +39,10 @@ async def listener(m: types.Message, batch_size: int = 5, polling_timeout=10)
             for msg in msgs:
                 try:
                     await bot.send_message(admin_id, msgpack.unpackb(msg.data))
-                except aiogram.exceptions.TelegramForbiddenError:
+                except TelegramForbiddenError:
                     pass
                 await msg.ack()
-        except errors.TimeoutError:
+        except TimeoutError:
             await m.answer("Рассылка закончена")
             break
         except TelegramRetryAfter as e:

@@ -7,3 +7,5 @@
 pip install -r requirements.txt
 python mini_bot.py
 ```
+
+наш чат по nats: https://t.me/nats_py

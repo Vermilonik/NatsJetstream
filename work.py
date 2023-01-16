@@ -9,8 +9,8 @@ from aiogram.filters.command import Command
 from command_mk2 import CommandMk2
 from nats.errors import TimeoutError
 
-bot = Bot(token="5788906850:AAEd-E1dhx_XXJH2ir2zprnuA2KbYg2W130")
-admin_id = 5042344467
+bot = Bot(token="token")
+admin_id = "your_id"
 dp = Dispatcher()
 
 

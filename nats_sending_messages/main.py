@@ -30,7 +30,7 @@ async def writer(m: types.Message, num: Optional[str], msg: Optional[str]):
 async def listener(m: types.Message, batch_size: int = 5, polling_timeout=10):
     nc = await nats.connect(["nats://localhost:4222"])
     js = nc.jetstream()
-    psub = await js.pull_subscribe(subject=">", durable="aiogram")
+    psub = await js.pull_subscribe(subject="aiogram.mess.sending", durable="aiogram")
     if not psub:
         raise ValueError("No consumer subscription, pizdec")
     while True:

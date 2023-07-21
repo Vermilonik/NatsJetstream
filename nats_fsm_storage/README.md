@@ -6,7 +6,7 @@
 и наконец, нам осталось написать эти 2 команды:
 ```
 pip install -r requirements.txt
-python bot.py
+python main.py
 ```
 
 наш чат: https://t.me/nats_py

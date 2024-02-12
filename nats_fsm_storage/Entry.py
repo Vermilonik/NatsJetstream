@@ -1,7 +1,6 @@
 from typing import Any, Dict, Optional
 
 import ormsgpack
-from aiogram import Bot
 from aiogram.dispatcher.filters.state import StateType
 from aiogram.dispatcher.fsm.state import State
 from aiogram.dispatcher.fsm.storage.base import BaseStorage, StorageKey
@@ -21,11 +20,11 @@ class NATSFSMStorage(BaseStorage):
     def _key_formatter(key: StorageKey) -> str:
         return f"{key.bot_id}:{key.user_id}:{key.chat_id}:{key.destiny}"
 
-    async def set_state(self, bot: Bot, key: StorageKey, state: StateType = None) -> None:
+    async def set_state(self, key: StorageKey, state: StateType = None) -> None:
         state = state.state if isinstance(state, State) else state
         await self.kv_states.put(self._key_formatter(key), ormsgpack.packb(state or None))
 
-    async def get_state(self, bot: Bot, key: StorageKey) -> Optional[str]:
+    async def get_state(self, key: StorageKey) -> Optional[str]:
         try:
             entry = await self.kv_states.get(self._key_formatter(key))
             data = ormsgpack.unpackb(entry.value)
@@ -33,10 +32,10 @@ class NATSFSMStorage(BaseStorage):
             return None
         return data
 
-    async def set_data(self, bot: Bot, key: StorageKey, data: Dict[str, Any]) -> None:
+    async def set_data(self, key: StorageKey, data: Dict[str, Any]) -> None:
         await self.kv_data.put(self._key_formatter(key), ormsgpack.packb(data))
 
-    async def get_data(self, bot: Bot, key: StorageKey) -> Dict[str, Any]:
+    async def get_data(self, key: StorageKey) -> Dict[str, Any]:
         try:
             entry = await self.kv_data.get(self._key_formatter(key))
             return ormsgpack.unpackb(entry.value)

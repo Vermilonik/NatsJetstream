@@ -19,7 +19,7 @@ async def photo(m: Message):
         name = f"photo_id_from_{m.from_user.id}",
         data = m.photo[-1].file_id.encode(),
     )
-    await m.answer(await a.get(f"photo_id_from_{m.from_user.id}"))
+    await m.answer(await storage.get(f"photo_id_from_{m.from_user.id}"))
     
 
 async def main():
